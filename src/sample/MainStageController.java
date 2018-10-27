@@ -125,7 +125,6 @@ public class MainStageController {
     public void addGame(String name, String key) {
         GameEntry newGame = new GameEntry(name, key);
         games.add(newGame);
-        validPaneWrapper.getChildren().add(newEntryPanel(newGame, validPaneContent));
-        //TODO: returns null when new window is open - switch to multiple controllers? - multiple controllers suck - make it all in 1 window ?
+        validPaneContent.getChildren().add(newEntryPanel(newGame, validPaneContent));
     }
 }
