@@ -20,9 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Controller {
-    @FXML
-    private TextField newGameKey, newGameName;
+public class MainStageController {
+    NewKeyController newKeyController;
+
     @FXML
     private AnchorPane validPaneWrapper;
     @FXML
@@ -43,31 +43,24 @@ public class Controller {
     }
 
     @FXML
-    private void newKeyWindow(ActionEvent actionEvent) {
-        System.out.println(validPaneContent);
+    private void newKeyWindow(ActionEvent actionEvent) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
         Stage newKeyStage = new Stage();
-        System.out.println(validPaneContent);
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("newKeyWindow.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(validPaneContent);
         newKeyStage.setTitle("Add new key");
+        Parent root = loader.load(getClass().getResource("newKeyWindow.fxml"));
+        newKeyController = loader.getController();
         Scene mainScene = new Scene(root, 600, 300);
         newKeyStage.setMaxHeight(mainScene.getHeight()+40);
         newKeyStage.setMinHeight(mainScene.getHeight()+40);
         newKeyStage.setMaxWidth(mainScene.getWidth());
         newKeyStage.setMinWidth(mainScene.getWidth());
         newKeyStage.setScene(mainScene);
-        System.out.println(validPaneContent);
+
         newKeyStage.show();
-        System.out.println(validPaneContent);
     }
 
     @FXML
-    public void fillContent(){
+    public void initialize() throws IOException{
         locationSet.add(validPaneContent);
         locationSet.add(usedPaneContent);
 
@@ -129,15 +122,10 @@ public class Controller {
         return null;
     }
 
-    public void addKey(ActionEvent actionEvent) {
-        System.out.println(validPaneContent);
-        GameEntry newGame = new GameEntry(newGameName.getText(), newGameKey.getText());
+    public void addGame(String name, String key) {
+        GameEntry newGame = new GameEntry(name, key);
         games.add(newGame);
-        validPaneWrapper.getChildren().add(newEntryPanel(newGame, validPaneContent)); //TODO: returns null when new window is open - switch to multiple controllers?
-
-        newGameName.clear();
-        newGameKey.clear();
-
-        //TODO: Add new item
+        validPaneWrapper.getChildren().add(newEntryPanel(newGame, validPaneContent));
+        //TODO: returns null when new window is open - switch to multiple controllers? - multiple controllers suck - make it all in 1 window ?
     }
 }
