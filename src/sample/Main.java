@@ -15,6 +15,7 @@ public class Main extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
         Parent root = loader.load();
+        Controller cntrl = loader.getController();
         mainWindow.setTitle("Your spares!");
         Scene mainScene = new Scene(root, 700, 500);
         mainWindow.setMaxHeight(mainScene.getHeight()+40);
@@ -23,6 +24,7 @@ public class Main extends Application {
         mainWindow.setMinWidth(mainScene.getWidth()*mult);
         mainWindow.setScene(mainScene);
 
+        cntrl.fillContent();
         mainWindow.show();
     }
 

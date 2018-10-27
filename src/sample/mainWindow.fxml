@@ -13,7 +13,7 @@
          <children>
             <Button id="btnValid" fx:id="btnValid" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Valid" />
             <Button id="btnUsed" fx:id="btnUsed" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Used" />
-            <Button fx:id="btnNewKey" layoutY="159.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#addNewKey" prefHeight="50.0" prefWidth="200.0" text="Add New Key" />
+            <Button fx:id="btnNewKey" layoutY="159.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#newKeyWindow" prefHeight="50.0" prefWidth="200.0" text="Add New Key" />
          </children>
          <padding>
             <Insets left="2.0" right="2.0" />
@@ -35,7 +35,7 @@
                   </ScrollPane>
                </children>
             </AnchorPane>
-            <AnchorPane id="validPane" fx:id="validPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
+            <AnchorPane id="validPane" fx:id="validPaneWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                <children>
                   <ScrollPane id="validScrollPane" fx:id="validScrollPane" hbarPolicy="NEVER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="494.0">
                     <content>

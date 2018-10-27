@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
@@ -21,13 +22,16 @@ import java.util.ArrayList;
 
 public class Controller {
     @FXML
-    private AnchorPane validPane;
+    private TextField newGameKey, newGameName;
+    @FXML
+    private AnchorPane validPaneWrapper;
     @FXML
     private AnchorPane usedPane;
     @FXML
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
     private Button btnValid, btnUsed, btnNewKey;
+
     @SuppressWarnings("CanBeFinal")
     private ArrayList<FlowPane> locationSet = new ArrayList<>();
     private ArrayList<GameEntry> games = new ArrayList<>();
@@ -35,18 +39,21 @@ public class Controller {
     @FXML
     private void handleButtonAction(ActionEvent actionEvent) {
         if(actionEvent.getSource() == btnUsed) usedPane.toFront();
-        else if (actionEvent.getSource() == btnValid) validPane.toFront();
+        else if (actionEvent.getSource() == btnValid) validPaneWrapper.toFront();
     }
 
     @FXML
-    private void addNewKey(ActionEvent actionEvent) {
+    private void newKeyWindow(ActionEvent actionEvent) {
+        System.out.println(validPaneContent);
         Stage newKeyStage = new Stage();
+        System.out.println(validPaneContent);
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("newKeyWindow.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(validPaneContent);
         newKeyStage.setTitle("Add new key");
         Scene mainScene = new Scene(root, 600, 300);
         newKeyStage.setMaxHeight(mainScene.getHeight()+40);
@@ -54,12 +61,13 @@ public class Controller {
         newKeyStage.setMaxWidth(mainScene.getWidth());
         newKeyStage.setMinWidth(mainScene.getWidth());
         newKeyStage.setScene(mainScene);
-
+        System.out.println(validPaneContent);
         newKeyStage.show();
+        System.out.println(validPaneContent);
     }
 
     @FXML
-    public void initialize(){
+    public void fillContent(){
         locationSet.add(validPaneContent);
         locationSet.add(usedPaneContent);
 
@@ -113,14 +121,8 @@ public class Controller {
             {
                 ObservableList<Node> innerLoc = ((FlowPane)node).getChildren();
                 for(Node innerNode : innerLoc){
-                    System.out.println(innerNode.getClass());
-                    System.out.println(Label.class);
-                    if (innerNode.getClass().equals(Label.class) ) {
-                        if( ((Label)innerNode).getText().equals(game.getName()) ) {
-                            System.out.println("Found label: " + innerNode.toString());
-                            return (FlowPane)node;
-                        }
-                    }
+                    if (innerNode.getClass().equals(Label.class) && ((Label) innerNode).getText().equals(game.getName()))
+                        return (FlowPane) node;
                 }
             }
         }
@@ -128,6 +130,14 @@ public class Controller {
     }
 
     public void addKey(ActionEvent actionEvent) {
+        System.out.println(validPaneContent);
+        GameEntry newGame = new GameEntry(newGameName.getText(), newGameKey.getText());
+        games.add(newGame);
+        validPaneWrapper.getChildren().add(newEntryPanel(newGame, validPaneContent)); //TODO: returns null when new window is open - switch to multiple controllers?
+
+        newGameName.clear();
+        newGameKey.clear();
+
         //TODO: Add new item
     }
 }
