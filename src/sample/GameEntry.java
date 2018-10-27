@@ -1,5 +1,6 @@
 package sample;
 
+@SuppressWarnings("WeakerAccess")
 public class GameEntry {
     private String name, key, note;
     private boolean used;
