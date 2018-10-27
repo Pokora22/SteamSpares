@@ -3,6 +3,7 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,34 +12,22 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Controller {
     @FXML
     public AnchorPane validPane, usedPane;
-
-    public FlowPane getUsedPaneContent() {
-        return usedPaneContent;
-    }
-
-    public FlowPane getValidPaneContent() {
-        return validPaneContent;
-    }
-
     @FXML
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
     private Button btnValid, btnUsed, btnNewKey;
+    private ArrayList<AnchorPane> entries;
 
     @FXML
     private void handleButtonAction(ActionEvent actionEvent) {
-
-        if(actionEvent.getSource() == btnUsed){
-            usedPane.toFront();
-        }
-
-        else if (actionEvent.getSource() == btnValid){
-            validPane.toFront();
-        }
+        if(actionEvent.getSource() == btnUsed) usedPane.toFront();
+        else if (actionEvent.getSource() == btnValid) validPane.toFront();
     }
 
     @FXML
@@ -61,11 +50,15 @@ public class Controller {
         newKeyStage.show();
     }
 
-    public void fillKeys(){
-        for(int i = 0; i < 10; i++){
+    private void showEntries(){
+
+    }
+
+    public void fillKeys(Collection<GameEntry> games){
+        for(GameEntry game:games){
+            FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
             try {
-                validPaneContent.getChildren().add(FXMLLoader.load(getClass().getResource("validKeyEntry.fxml")));
-                usedPaneContent.getChildren().add(FXMLLoader.load(getClass().getResource("usedKeyEntry.fxml")));
+                location.getChildren().add(FXMLLoader.load(getClass().getResource("validKeyEntry.fxml")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
