@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxWidth="-Infinity" prefHeight="100.0" prefWidth="478.0" style="-fx-border-width: 1 2 1 2; -fx-border-color: blue;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+        <Button layoutX="95.0" layoutY="63.0" mnemonicParsing="false" onAction="#addNote" text="Add Note" />
+        <Button layoutX="14.0" layoutY="63.0" mnemonicParsing="false" onAction="#copyKeyToCboard" text="Copy Key" />
+        <Button fx:id="btnUsedKeyMove" layoutX="371.0" layoutY="63.0" mnemonicParsing="false" onAction="#moveKey" text="Move to Valid" />
+        <Label fx:id="entryName" layoutX="22.0" layoutY="14.0" prefHeight="44.0" prefWidth="446.0" text="Used game key" />
+    </children>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+</AnchorPane>

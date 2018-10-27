@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<BorderPane id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <left>
+      <AnchorPane id="menuPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="96.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button id="btnValid" fx:id="btnValid" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Valid" />
+            <Button id="btnUsed" fx:id="btnUsed" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Used" />
+            <Button fx:id="btnNewKey" layoutY="159.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#addNewKey" prefHeight="50.0" prefWidth="200.0" text="Add New Key" />
+         </children>
+         <padding>
+            <Insets left="2.0" right="2.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets left="2.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane id="keyPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane id="usedPane" fx:id="usedPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
+               <children>
+                  <ScrollPane id="usedScrollPane" fx:id="usedScrollPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="494.0">
+                    <content>
+                      <FlowPane fx:id="usedPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="478.0" />
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="validPane" fx:id="validPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
+               <children>
+                  <ScrollPane id="validScrollPane" fx:id="validScrollPane" hbarPolicy="NEVER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="494.0">
+                    <content>
+                      <FlowPane fx:id="validPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="478.0" />
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
