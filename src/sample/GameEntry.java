@@ -4,12 +4,12 @@ public class GameEntry {
     private String name, key, note;
     private boolean used;
 
-    public GameEntry(String name, String key) throws IllegalArgumentException{
-        if (name == "" || name==null) throw new IllegalArgumentException("Name can't be empty");
+    public GameEntry(String name, String key, String note){
+        if (name == "" || name==null) this.name = "Name can't be empty";
         else this.name = name;
-        if (key == "" || key==null) throw new IllegalArgumentException("Name can't be empty");
+        if (key == "" || key==null) this.key = "can't be empty";
         else this.key = key;
-        this.note = "";
+        this.note = note;
         this.used = false;
     }
 

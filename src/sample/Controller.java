@@ -1,80 +1,51 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Controller {
-    @FXML
-    public AnchorPane validPane, usedPane;
-    @FXML
-    private FlowPane usedPaneContent, validPaneContent;
-    @FXML
-    private Button btnValid, btnUsed, btnNewKey;
-    private ArrayList<AnchorPane> entries;
+    @FXML private Button newEntryBtn;
+    @FXML private TableView<GameEntry> gamesTable;
+    @FXML private TableColumn tName, tKey, tNote, tUsed;
+    @FXML private TextField newNameString, newKeyString, newNoteString;
 
-    @FXML
-    private void handleButtonAction(ActionEvent actionEvent) {
-        if(actionEvent.getSource() == btnUsed) usedPane.toFront();
-        else if (actionEvent.getSource() == btnValid) validPane.toFront();
+    public void initialize(){
+        tName.setCellValueFactory(new PropertyValueFactory<GameEntry, String>("name"));
+        tKey.setCellValueFactory(new PropertyValueFactory<GameEntry, String>("key"));
+        tNote.setCellValueFactory(new PropertyValueFactory<GameEntry, String>("note"));
+        tUsed.setCellValueFactory(new PropertyValueFactory<GameEntry, Boolean>("used"));
+
+        gamesTable.setItems(gameEntries());
     }
 
-    @FXML
-    private void addNewKey(ActionEvent actionEvent) {
-        Stage newKeyStage = new Stage();
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("newKeyWindow.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+    public ObservableList<GameEntry> gameEntries(){
+        ObservableList<GameEntry> games = FXCollections.observableArrayList();
+        for(int i = 0; i < 27; i++){
+            games.add(new GameEntry("Name " + i,"key here", "note"));
         }
-        newKeyStage.setTitle("Add new key");
-        Scene mainScene = new Scene(root, 600, 300);
-        newKeyStage.setMaxHeight(mainScene.getHeight()+40);
-        newKeyStage.setMinHeight(mainScene.getHeight()+40);
-        newKeyStage.setMaxWidth(mainScene.getWidth());
-        newKeyStage.setMinWidth(mainScene.getWidth());
-        newKeyStage.setScene(mainScene);
-
-        newKeyStage.show();
-    }
-
-    private void showEntries(){
-
-    }
-
-    public void fillKeys(Collection<GameEntry> games){
-        for(GameEntry game:games){
-            FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
-            try {
-                location.getChildren().add(FXMLLoader.load(getClass().getResource("validKeyEntry.fxml")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for(GameEntry g:games){
+            g.setUsed(games.indexOf(g)%4 == 0);
         }
+
+        return games;
     }
 
-    @FXML
-    private void addKey(ActionEvent actionEvent) {
+    public void addNewKey(ActionEvent actionEvent) {
+        gameEntries().add(new GameEntry(newNameString.getText(), newKeyString.getText(), newNoteString.getText()));
+        clearForm();
+        gameEntries().clear();
     }
 
-    public void addNote(ActionEvent actionEvent) {
-    }
-
-    public void copyKeyToCboard(ActionEvent actionEvent) {
-    }
-
-    public void moveKey(ActionEvent actionEvent) {
+    private void clearForm(){
+        newNoteString.clear();
+        newKeyString.clear();
+        newNameString.clear();
     }
 }
