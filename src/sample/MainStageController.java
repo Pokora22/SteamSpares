@@ -10,15 +10,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+
+
 
 public class MainStageController {
     NewKeyController newKeyController;
@@ -62,16 +62,11 @@ public class MainStageController {
     @FXML
     public void initialize() throws IOException{
         locationSet.add(validPaneContent);
+        validPaneContent.getStyleClass().add("validGamePane");
         locationSet.add(usedPaneContent);
+        usedPaneContent.getStyleClass().add("usedGamePane");
 
-        //TODO: Move new games to a loader somewhere - below is just testing
-        for(int i = 0; i < 27; i++){
-            games.add(new GameEntry("Name " + i,"key here"));
-        }
-        for(GameEntry g:games){
-            g.setUsed(games.indexOf(g)%4 == 0);
-        }
-
+        loadList();
         for(GameEntry game:games){
             FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
             location.getChildren().add(newEntryPanel(game, location));
@@ -82,7 +77,7 @@ public class MainStageController {
         FlowPane pane = new FlowPane();
 
         Button moveBtn = new Button("Used/Unused");
-        moveBtn.setTranslateX(10);
+        moveBtn.setTranslateX(4);
         moveBtn.setOnAction(actionEvent -> {
             game.setUsed(!game.isUsed());
             location.getChildren().remove(findGamePanel(game, location));
@@ -90,8 +85,15 @@ public class MainStageController {
             newLoc.getChildren().add(newEntryPanel(game, newLoc));
         });
 
+        Button removeBtn = new Button("Remove");
+        removeBtn.setTranslateX(6);
+        removeBtn.setOnAction(e->{
+            location.getChildren().remove(findGamePanel(game, location));
+            games.remove(game);
+        });
+
         Button codeBtn = new Button("Copy key");
-        codeBtn.setTranslateX(5);
+        codeBtn.setTranslateX(2);
         codeBtn.setOnAction(e->{
             ClipboardContent cc = new ClipboardContent();
             cc.putString(game.getKey());
@@ -100,10 +102,16 @@ public class MainStageController {
 
         Label gName = new Label(game.getName());
         gName.setWrapText(true);
-        gName.setMinWidth(200);
+        gName.setMinWidth(180);
         gName.setPadding(new Insets(2, 10, 2,10));
 
-        pane.getChildren().addAll(gName, codeBtn, moveBtn);
+        pane.getChildren().addAll(gName, codeBtn, moveBtn, removeBtn);
+
+        try {
+            saveList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return pane;
     }
@@ -126,5 +134,45 @@ public class MainStageController {
         GameEntry newGame = new GameEntry(name, key);
         games.add(newGame);
         validPaneContent.getChildren().add(newEntryPanel(newGame, validPaneContent));
+
+        try {
+            saveList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadList(){
+        FileInputStream fileInputStream = null;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = new FileInputStream("codes");
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+            System.out.println("File not found, creating new one");
+            try {
+                saveList();
+            } catch (IOException e1) {
+                System.out.println("Failed creating new file. What now ?");
+            }
+        }
+
+
+        try {
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            games = (ArrayList<GameEntry>) objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveList() throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream("codes");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(games);
+        objectOutputStream.close();
     }
 }

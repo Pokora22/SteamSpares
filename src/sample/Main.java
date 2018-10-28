@@ -20,6 +20,7 @@ public class Main extends Application {
         cntrl = loader.getController();
         mainWindow.setTitle("Your spares!");
         Scene mainScene = new Scene(root, 700, 500);
+        mainScene.getStylesheets().add("sample/style.css");
         mainWindow.setMaxHeight(mainScene.getHeight()+40);
         mainWindow.setMinHeight(mainScene.getHeight()+40);
         mainWindow.setMaxWidth(mainScene.getWidth()*mult);

@@ -1,7 +1,9 @@
 package sample;
 
+import java.io.Serializable;
+
 @SuppressWarnings("WeakerAccess")
-public class GameEntry {
+public class GameEntry implements Serializable {
     private String name, key, note;
     private boolean used;
 
