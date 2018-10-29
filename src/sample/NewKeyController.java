@@ -2,30 +2,37 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class NewKeyController {
     @FXML
     private TextField newGameKey, newGameName;
+    private MainStageController mainStageController;
+    private Scene mainScene;
 
     public void addKey(ActionEvent actionEvent) {
-        Main.cntrl.addGame(newGameName.getText(), newGameKey.getText());
+        mainStageController.addGame(newGameName.getText(), newGameKey.getText());
 
         newGameName.clear();
         newGameKey.clear();
+
+        goToMainScene(actionEvent);
     }
 
-    public String getNewGameKey() {
-        return newGameKey.getText();
+    public void goToMainScene(ActionEvent actionEvent) {
+        Stage sourceStage = ((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
+        sourceStage.setTitle("SteamSpares!");
+        sourceStage.setScene(mainScene);
     }
 
-    public String getNewGameName() {
-        return newGameName.getText();
+    public void setMainStageController(MainStageController mainStageController) {
+        this.mainStageController = mainStageController;
+    }
+
+    public void setMainScene(Scene mainScene) {
+        this.mainScene = mainScene;
     }
 }

@@ -1,5 +1,7 @@
 package sample;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,62 +17,67 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.util.ArrayList;
 
-
-
 public class MainStageController {
-    NewKeyController newKeyController;
+    private XStream xStream;
 
     @FXML
-    private AnchorPane validPaneWrapper;
-    @FXML
-    private AnchorPane usedPane;
+    private AnchorPane validPaneWrapper, usedPaneWrapper, menuPane;;
     @FXML
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
-    private Button btnValid, btnUsed, btnNewKey;
+    private Button btnValid, btnUsed;
 
     @SuppressWarnings("CanBeFinal")
     private ArrayList<FlowPane> locationSet = new ArrayList<>();
     private ArrayList<GameEntry> games = new ArrayList<>();
 
     @FXML
-    private void handleButtonAction(ActionEvent actionEvent) {
-        if(actionEvent.getSource() == btnUsed) usedPane.toFront();
-        else if (actionEvent.getSource() == btnValid) validPaneWrapper.toFront();
-    }
-
-    @FXML
-    private void newKeyWindow(ActionEvent actionEvent) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        Stage newKeyStage = new Stage();
-        newKeyStage.setTitle("Add new key");
-        Parent root = loader.load(getClass().getResource("newKeyWindow.fxml"));
-        newKeyController = loader.getController();
-        Scene mainScene = new Scene(root, 600, 300);
-        newKeyStage.setMaxHeight(mainScene.getHeight()+40);
-        newKeyStage.setMinHeight(mainScene.getHeight()+40);
-        newKeyStage.setMaxWidth(mainScene.getWidth());
-        newKeyStage.setMinWidth(mainScene.getWidth());
-        newKeyStage.setScene(mainScene);
-
-        newKeyStage.show();
-    }
-
-    @FXML
     public void initialize() throws IOException{
+        xStream = new XStream(new StaxDriver());
+
+        File file = new File("gameCodes.xml");
+        if(!file.exists() || (file.exists() && !file.canRead())) { //TODO: Check for writing rights too
+            saveList();
+        }
+
         locationSet.add(validPaneContent);
-        validPaneContent.getStyleClass().add("validGamePane");
         locationSet.add(usedPaneContent);
-        usedPaneContent.getStyleClass().add("usedGamePane");
+        btnValid.getStyleClass().add("rich-blue");
 
         loadList();
         for(GameEntry game:games){
             FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
             location.getChildren().add(newEntryPanel(game, location));
         }
+    }
+
+    @FXML
+    private void handleButtonAction(ActionEvent actionEvent) {
+        if(actionEvent.getSource() == btnUsed) usedPaneWrapper.toFront();
+        else if (actionEvent.getSource() == btnValid) validPaneWrapper.toFront();
+
+        Button[] buttons = {btnUsed, btnValid};
+        for(Button b: buttons){
+            b.getStyleClass().clear();
+            b.getStyleClass().add("button");
+        }
+        ((Button)actionEvent.getSource()).getStyleClass().add("rich-blue");
+    }
+
+    @FXML
+    private void newKeyWindow(ActionEvent actionEvent) throws IOException{
+        Stage sourceStage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("newKeyWindow.fxml"));
+        Parent root = loader.load();
+        NewKeyController newKeyController = loader.getController();
+        newKeyController.setMainStageController(this);
+        newKeyController.setMainScene(sourceStage.getScene());
+        sourceStage.setTitle("Add new key");
+        sourceStage.setScene(new Scene(root, 600, 300));
     }
 
     private FlowPane newEntryPanel(GameEntry game, FlowPane location){
@@ -90,6 +97,11 @@ public class MainStageController {
         removeBtn.setOnAction(e->{
             location.getChildren().remove(findGamePanel(game, location));
             games.remove(game);
+            try {
+                saveList();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
 
         Button codeBtn = new Button("Copy key");
@@ -116,7 +128,6 @@ public class MainStageController {
         return pane;
     }
 
-
     private FlowPane findGamePanel(GameEntry game, FlowPane location){
         for(Node node: location.getChildren()){
             {
@@ -142,37 +153,20 @@ public class MainStageController {
         }
     }
 
-    private void loadList(){
-        FileInputStream fileInputStream = null;
-        ObjectInputStream objectInputStream = null;
+    private void loadList() throws IOException {
+        ObjectInputStream is = null;
         try {
-            fileInputStream = new FileInputStream("codes");
-        } catch (FileNotFoundException e) {
-            System.out.println(e);
-            System.out.println("File not found, creating new one");
-            try {
-                saveList();
-            } catch (IOException e1) {
-                System.out.println("Failed creating new file. What now ?");
-            }
-        }
-
-
-        try {
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            games = (ArrayList<GameEntry>) objectInputStream.readObject();
-            objectInputStream.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            is = xStream.createObjectInputStream(new FileReader("gameCodes.xml"));
+            games = (ArrayList<GameEntry>) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        is.close();
     }
 
     private void saveList() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream("codes");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(games);
-        objectOutputStream.close();
+        ObjectOutputStream out = xStream.createObjectOutputStream(new FileWriter("gameCodes.xml"));
+        out.writeObject(games);
+        out.close();
     }
 }
