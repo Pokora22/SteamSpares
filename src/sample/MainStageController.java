@@ -68,19 +68,13 @@ public class MainStageController {
 
     @FXML
     private void newKeyWindow(ActionEvent actionEvent) throws IOException{
+        Stage sourceStage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
         FXMLLoader loader = new FXMLLoader();
         Stage newKeyStage = new Stage();
         newKeyStage.setTitle("Add new key");
         Parent root = loader.load(getClass().getResource("newKeyWindow.fxml"));
-        newKeyController = loader.getController();
-        Scene mainScene = new Scene(root, 600, 300);
-        newKeyStage.setMaxHeight(mainScene.getHeight()+40);
-        newKeyStage.setMinHeight(mainScene.getHeight()+40);
-        newKeyStage.setMaxWidth(mainScene.getWidth());
-        newKeyStage.setMinWidth(mainScene.getWidth());
-        newKeyStage.setScene(mainScene);
-
-        newKeyStage.show();
+        sourceStage.setScene(new Scene(root, 600, 300));
     }
 
     private void initializeList(){
@@ -104,6 +98,11 @@ public class MainStageController {
         removeBtn.setOnAction(e->{
             location.getChildren().remove(findGamePanel(game, location));
             games.remove(game);
+            try {
+                saveList();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
 
         Button codeBtn = new Button("Copy key");
