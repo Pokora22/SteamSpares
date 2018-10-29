@@ -1,5 +1,7 @@
 package sample;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 
 public class MainStageController {
     NewKeyController newKeyController;
+    XStream xStream;
 
     @FXML
     private AnchorPane validPaneWrapper;
@@ -35,6 +39,26 @@ public class MainStageController {
     @SuppressWarnings("CanBeFinal")
     private ArrayList<FlowPane> locationSet = new ArrayList<>();
     private ArrayList<GameEntry> games = new ArrayList<>();
+
+    @FXML
+    public void initialize() throws IOException{
+        xStream = new XStream(new StaxDriver());
+        File file = new File("gameCodes.xml");
+        if(!file.exists() || (file.exists() && !file.canRead())) { //TODO: Check for writing rights too
+            saveList();
+        }
+
+        locationSet.add(validPaneContent);
+        validPaneContent.getStyleClass().add("validGamePane");
+        locationSet.add(usedPaneContent);
+        usedPaneContent.getStyleClass().add("usedGamePane");
+
+        loadList();
+        for(GameEntry game:games){
+            FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
+            location.getChildren().add(newEntryPanel(game, location));
+        }
+    }
 
     @FXML
     private void handleButtonAction(ActionEvent actionEvent) {
@@ -59,18 +83,8 @@ public class MainStageController {
         newKeyStage.show();
     }
 
-    @FXML
-    public void initialize() throws IOException{
-        locationSet.add(validPaneContent);
-        validPaneContent.getStyleClass().add("validGamePane");
-        locationSet.add(usedPaneContent);
-        usedPaneContent.getStyleClass().add("usedGamePane");
+    private void initializeList(){
 
-        loadList();
-        for(GameEntry game:games){
-            FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
-            location.getChildren().add(newEntryPanel(game, location));
-        }
     }
 
     private FlowPane newEntryPanel(GameEntry game, FlowPane location){
@@ -142,37 +156,20 @@ public class MainStageController {
         }
     }
 
-    private void loadList(){
-        FileInputStream fileInputStream = null;
-        ObjectInputStream objectInputStream = null;
+    private void loadList() throws IOException {
+        ObjectInputStream is = null;
         try {
-            fileInputStream = new FileInputStream("codes");
-        } catch (FileNotFoundException e) {
-            System.out.println(e);
-            System.out.println("File not found, creating new one");
-            try {
-                saveList();
-            } catch (IOException e1) {
-                System.out.println("Failed creating new file. What now ?");
-            }
-        }
-
-
-        try {
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            games = (ArrayList<GameEntry>) objectInputStream.readObject();
-            objectInputStream.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            is = xStream.createObjectInputStream(new FileReader("gameCodes.xml"));
+            games = (ArrayList<GameEntry>) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        is.close();
     }
 
     private void saveList() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream("codes");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(games);
-        objectOutputStream.close();
+        ObjectOutputStream out = xStream.createObjectOutputStream(new FileWriter("gameCodes.xml"));
+        out.writeObject(games);
+        out.close();
     }
 }
