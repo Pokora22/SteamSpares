@@ -24,8 +24,7 @@ import java.util.ArrayList;
 
 
 public class MainStageController {
-    NewKeyController newKeyController;
-    XStream xStream;
+    private XStream xStream;
 
     @FXML
     private AnchorPane validPaneWrapper;
@@ -34,7 +33,7 @@ public class MainStageController {
     @FXML
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
-    private Button btnValid, btnUsed, btnNewKey;
+    private Button btnValid, btnUsed;
 
     @SuppressWarnings("CanBeFinal")
     private ArrayList<FlowPane> locationSet = new ArrayList<>();
@@ -43,6 +42,7 @@ public class MainStageController {
     @FXML
     public void initialize() throws IOException{
         xStream = new XStream(new StaxDriver());
+
         File file = new File("gameCodes.xml");
         if(!file.exists() || (file.exists() && !file.canRead())) { //TODO: Check for writing rights too
             saveList();
@@ -69,16 +69,12 @@ public class MainStageController {
     @FXML
     private void newKeyWindow(ActionEvent actionEvent) throws IOException{
         Stage sourceStage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-
-        FXMLLoader loader = new FXMLLoader();
-        Stage newKeyStage = new Stage();
-        newKeyStage.setTitle("Add new key");
-        Parent root = loader.load(getClass().getResource("newKeyWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("newKeyWindow.fxml"));
+        Parent root = loader.load();
+        NewKeyController newKeyController = loader.getController();
+        newKeyController.setMainStageController(this);
+        sourceStage.setTitle("Add new key");
         sourceStage.setScene(new Scene(root, 600, 300));
-    }
-
-    private void initializeList(){
-
     }
 
     private FlowPane newEntryPanel(GameEntry game, FlowPane location){

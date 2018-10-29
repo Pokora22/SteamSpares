@@ -2,23 +2,24 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class NewKeyController {
     @FXML
     private TextField newGameKey, newGameName;
+    private MainStageController mainStageController;
 
     public void addKey(ActionEvent actionEvent) {
-        Main.cntrl.addGame(newGameName.getText(), newGameKey.getText());
+        mainStageController.addGame(newGameName.getText(), newGameKey.getText());
 
         newGameName.clear();
         newGameKey.clear();
+
+
+    }
+
+    public void setMainStageController(MainStageController mainStageController) {
+        this.mainStageController = mainStageController;
     }
 
     public String getNewGameKey() {
