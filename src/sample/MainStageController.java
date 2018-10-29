@@ -30,6 +30,8 @@ public class MainStageController {
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
     private Button btnValid, btnUsed;
+    @FXML
+    private Label labelValidKeys, labelUsedKeys, labelTotalKeys;
 
     @SuppressWarnings("CanBeFinal")
     private ArrayList<FlowPane> locationSet = new ArrayList<>();
@@ -50,9 +52,10 @@ public class MainStageController {
 
         loadList();
         for(GameEntry game:games){
-            FlowPane location = game.isUsed()? usedPaneContent:validPaneContent;
+            FlowPane location = game.isUsed() ? usedPaneContent : validPaneContent;
             location.getChildren().add(newEntryPanel(game, location));
         }
+        updateTotals();
     }
 
     @FXML
@@ -91,6 +94,7 @@ public class MainStageController {
             location.getChildren().remove(findGamePanel(game, location));
             FlowPane newLoc = locationSet.get((locationSet.indexOf(location)+1)%locationSet.size());
             newLoc.getChildren().add(newEntryPanel(game, newLoc));
+            updateTotals();
         });
 
         Button removeBtn = new Button("Remove");
@@ -103,6 +107,7 @@ public class MainStageController {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+            updateTotals();
         });
 
         Button codeBtn = new Button("Copy key");
@@ -153,6 +158,21 @@ public class MainStageController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        updateTotals();
+    }
+
+    private void updateTotals(){
+        int usedKeys = 0;
+        int validKeys = 0;
+        for(GameEntry g:games){
+            if (g.isUsed()) usedKeys++;
+            else validKeys++;
+        }
+
+        labelValidKeys.setText("Valid keys: " + validKeys);
+        labelUsedKeys.setText("Used keys: " + usedKeys);
+        labelTotalKeys.setText("Total keys: " + (validKeys+usedKeys));
     }
 
     private void loadList() throws IOException {
