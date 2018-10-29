@@ -21,15 +21,11 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 
-
-
 public class MainStageController {
     private XStream xStream;
 
     @FXML
-    private AnchorPane validPaneWrapper;
-    @FXML
-    private AnchorPane usedPane;
+    private AnchorPane validPaneWrapper, usedPaneWrapper, menuPane;;
     @FXML
     private FlowPane usedPaneContent, validPaneContent;
     @FXML
@@ -49,9 +45,8 @@ public class MainStageController {
         }
 
         locationSet.add(validPaneContent);
-        validPaneContent.getStyleClass().add("validGamePane");
         locationSet.add(usedPaneContent);
-        usedPaneContent.getStyleClass().add("usedGamePane");
+        btnValid.getStyleClass().add("rich-blue");
 
         loadList();
         for(GameEntry game:games){
@@ -62,8 +57,15 @@ public class MainStageController {
 
     @FXML
     private void handleButtonAction(ActionEvent actionEvent) {
-        if(actionEvent.getSource() == btnUsed) usedPane.toFront();
+        if(actionEvent.getSource() == btnUsed) usedPaneWrapper.toFront();
         else if (actionEvent.getSource() == btnValid) validPaneWrapper.toFront();
+
+        Button[] buttons = {btnUsed, btnValid};
+        for(Button b: buttons){
+            b.getStyleClass().clear();
+            b.getStyleClass().add("button");
+        }
+        ((Button)actionEvent.getSource()).getStyleClass().add("rich-blue");
     }
 
     @FXML
@@ -73,6 +75,7 @@ public class MainStageController {
         Parent root = loader.load();
         NewKeyController newKeyController = loader.getController();
         newKeyController.setMainStageController(this);
+        newKeyController.setMainScene(sourceStage.getScene());
         sourceStage.setTitle("Add new key");
         sourceStage.setScene(new Scene(root, 600, 300));
     }
@@ -124,7 +127,6 @@ public class MainStageController {
 
         return pane;
     }
-
 
     private FlowPane findGamePanel(GameEntry game, FlowPane location){
         for(Node node: location.getChildren()){

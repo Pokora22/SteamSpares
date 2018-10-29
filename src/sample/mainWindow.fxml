@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<BorderPane id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainStageController">
+<BorderPane id="mainWindow" maxHeight="500" maxWidth="700" minHeight="500" minWidth="700" prefHeight="500.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainStageController">
    <left>
-      <AnchorPane id="menuPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="96.0" BorderPane.alignment="CENTER">
+      <AnchorPane id="menuPane" fx:id="menuPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="96.0" BorderPane.alignment="CENTER">
          <children>
             <Button id="btnValid" fx:id="btnValid" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Valid" />
             <Button id="btnUsed" fx:id="btnUsed" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" text="Used" />
@@ -26,20 +26,20 @@
    <center>
       <AnchorPane id="keyPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane id="usedPane" fx:id="usedPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
+            <AnchorPane id="usedPane" fx:id="usedPaneWrapper" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                <children>
-                  <ScrollPane id="usedScrollPane" fx:id="usedScrollPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="494.0">
+                  <ScrollPane id="usedScrollPane" fx:id="usedScrollPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                     <content>
-                      <FlowPane fx:id="usedPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="478.0" />
+                      <FlowPane fx:id="usedPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="usedGameArea"/>
                     </content>
                   </ScrollPane>
                </children>
             </AnchorPane>
             <AnchorPane id="validPane" fx:id="validPaneWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                <children>
-                  <ScrollPane id="validScrollPane" fx:id="validScrollPane" hbarPolicy="NEVER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="494.0">
+                  <ScrollPane id="validScrollPane" fx:id="validScrollPane" hbarPolicy="NEVER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                     <content>
-                      <FlowPane fx:id="validPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="478.0" />
+                      <FlowPane fx:id="validPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="validGameArea"/>
                     </content>
                   </ScrollPane>
                </children>

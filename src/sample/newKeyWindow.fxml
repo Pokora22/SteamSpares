@@ -5,12 +5,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NewKeyController">
+<Pane maxHeight="300" maxWidth="600" minHeight="300" minWidth="600" prefHeight="275.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NewKeyController">
    <children>
       <TextField fx:id="newGameName" layoutX="88.0" layoutY="46.0" prefHeight="47.0" prefWidth="412.0" promptText="New Game Name" />
       <TextField fx:id="newGameKey" layoutX="124.0" layoutY="135.0" prefHeight="35.0" prefWidth="347.0" promptText="XXXX-XXXX-XXXX" />
       <Button fx:id="btnAddKey" layoutX="471.0" layoutY="214.0" mnemonicParsing="false" onAction="#addKey" prefHeight="35.0" prefWidth="72.0" text="Add key" />
       <Label layoutX="93.0" layoutY="14.0" prefHeight="27.0" prefWidth="412.0" text="Name of the game" />
       <Label layoutX="125.0" layoutY="112.0" prefHeight="17.0" prefWidth="347.0" text="KEY" />
+      <Button fx:id="btnAddKeyCancel" layoutX="370.0" layoutY="214.0" mnemonicParsing="false" onAction="#goToMainScene" prefHeight="35.0" prefWidth="72.0" text="Cancel" />
    </children>
 </Pane>
