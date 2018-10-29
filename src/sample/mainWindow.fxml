@@ -30,7 +30,7 @@
                <children>
                   <ScrollPane id="usedScrollPane" fx:id="usedScrollPane" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                     <content>
-                      <FlowPane fx:id="usedPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="usedGameArea"/>
+                      <FlowPane fx:id="usedPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="485.0" styleClass="usedGameArea"/>
                     </content>
                   </ScrollPane>
                </children>
@@ -39,7 +39,7 @@
                <children>
                   <ScrollPane id="validScrollPane" fx:id="validScrollPane" hbarPolicy="NEVER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0">
                     <content>
-                      <FlowPane fx:id="validPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="validGameArea"/>
+                      <FlowPane fx:id="validPaneContent" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="485.0" styleClass="validGameArea"/>
                     </content>
                   </ScrollPane>
                </children>
