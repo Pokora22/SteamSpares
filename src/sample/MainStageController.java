@@ -83,6 +83,7 @@ public class MainStageController {
     private FlowPane newEntryPanel(GameEntry game, FlowPane location){
         FlowPane pane = new FlowPane();
 
+
         Button moveBtn = new Button("Used/Unused");
         moveBtn.setTranslateX(4);
         moveBtn.setOnAction(actionEvent -> {
@@ -114,7 +115,8 @@ public class MainStageController {
 
         Label gName = new Label(game.getName());
         gName.setWrapText(true);
-        gName.setMinWidth(180);
+        gName.setPrefWidth(180);
+        gName.setMinHeight(50);
         gName.setPadding(new Insets(2, 10, 2,10));
 
         pane.getChildren().addAll(gName, codeBtn, moveBtn, removeBtn);
