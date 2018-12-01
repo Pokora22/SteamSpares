@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<BorderPane id="mainWindow" maxHeight="500" maxWidth="700" minHeight="500" minWidth="700" prefHeight="500.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainStageController">
+<BorderPane id="mainWindow" maxHeight="500" maxWidth="700" minHeight="500" minWidth="700" prefHeight="500.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainStageController">
    <left>
       <AnchorPane id="menuPane" fx:id="menuPane" maxWidth="-Infinity" prefHeight="500.0" prefWidth="96.0" BorderPane.alignment="CENTER">
          <children>
@@ -18,6 +18,7 @@
             <Label fx:id="labelValidKeys" layoutX="13.0" layoutY="242.0" prefHeight="17.0" prefWidth="105.0" text="Valid keys: " />
             <Label fx:id="labelUsedKeys" layoutX="13.0" layoutY="259.0" prefHeight="17.0" prefWidth="105.0" text="Used keys: " />
             <Label fx:id="labelTotalKeys" layoutX="13.0" layoutY="276.0" prefHeight="17.0" prefWidth="105.0" text="Total keys: " />
+            <Button fx:id="btnCopyList" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#copyListToClipboard" prefHeight="50.0" prefWidth="200.0" text="Copy List To Clipboard" />
          </children>
          <padding>
             <Insets left="2.0" right="2.0" />

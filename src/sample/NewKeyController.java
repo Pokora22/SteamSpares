@@ -15,6 +15,7 @@ public class NewKeyController {
 
     public void addKey(ActionEvent actionEvent) {
         mainStageController.addGame(newGameName.getText(), newGameKey.getText());
+        mainStageController.sortGames();
 
         newGameName.clear();
         newGameKey.clear();

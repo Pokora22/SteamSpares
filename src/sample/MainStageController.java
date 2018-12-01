@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class MainStageController {
     private XStream xStream;
@@ -190,5 +191,21 @@ public class MainStageController {
         ObjectOutputStream out = xStream.createObjectOutputStream(new FileWriter("gameCodes.xml"));
         out.writeObject(games);
         out.close();
+    }
+
+    @FXML
+    private void copyListToClipboard(ActionEvent actionEvent) { //TODO: Change which list is copied based on which list is shown maybe
+        sortGames();
+        StringBuilder list = new StringBuilder();
+        for(GameEntry gameEntry : games) if(!gameEntry.isUsed()) list.append(gameEntry.getName() + "\n");
+
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(list.toString());
+        clipboard.setContent(content);
+    }
+
+    public void sortGames() {
+        games.sort(Comparator.comparing(GameEntry::getName));
     }
 }
